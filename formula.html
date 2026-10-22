@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Pakan Ayam Petelur - Bahan Alternatif Lengkap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .category-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .category-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .ingredient-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .ingredient-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .ingredient-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .ingredient-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .ingredient-card h4 {
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 30px;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        .badge-energy { background: #feca57; color: #333; }
+        .badge-protein { background: #ff6b6b; color: white; }
+        .badge-fiber { background: #48dbfb; color: #333; }
+        .badge-calcium { background: #1dd1a1; color: white; }
+        .badge-fat { background: #ff9ff3; color: #333; }
+        .badge-vitamin { background: #54a0ff; color: white; }
+
+        .price-tag {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #10ac84;
+            margin: 5px 0;
+        }
+
+        .nutrition-info {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .benefit-text {
+            font-size: 0.8em;
+            color: #555;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #ddd;
+            font-style: italic;
+        }
+
+        .input-section {
+            margin-top: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .input-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .input-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .input-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .input-item:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .input-item label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .input-item .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-item input[type="number"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .input-item input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .input-item .percent-sign {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .input-item .nutrition-detail {
+            font-size: 0.85em;
+            color: #888;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
+        }
+
+        .input-item .remove-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background 0.3s;
+        }
+
+        .input-item .remove-btn:hover {
+            background: #ee5a5a;
+        }
+
+        .total-section {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .total-percentage {
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .btn-calculate {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-calculate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-calculate:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .result-card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .result-card th, .result-card td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-card th {
+            background: #667eea;
+            color: white;
+        }
+
+        .shopping-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .shopping-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.3s;
+        }
+
+        .shopping-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .effect-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .effect-positive { color: #1dd1a1; }
+        .effect-negative { color: #ff6b6b; }
+        .effect-warning { color: #feca57; }
+
+        .recommendation {
+            background: linear-gradient(135deg, #1dd1a1 0%, #10ac84 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+
+        .price-tag-big {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1dd1a1;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-style: italic;
+        }
+
+        .hint-text {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        /* Rekomendasi Section */
+        .recommendation-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .recommendation-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .recommendation-table {
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .recommendation-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .recommendation-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .recommendation-table td {
+            padding: 12px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+
+        .recommendation-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .recommendation-table tr:hover {
+            background: #e9ecef;
+        }
+
+        .rec-percent {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .rec-price {
+            color: #10ac84;
+            font-weight: bold;
+        }
+
+        .btn-apply-rec {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: background 0.3s;
+        }
+
+        .btn-apply-rec:hover {
+            background: #5a6fd6;
+        }
+
+        .total-rec {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            h1 { font-size: 1.8em; }
+            .ingredients-grid { grid-template-columns: 1fr; }
+            .input-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐔 Kalkulator Pakan Ayam Petelur</h1>
+        <p class="subtitle">Pilih bahan pakan alternatif dengan data harga & gizi lengkap</p>
+
+        <!-- SUMBER ENERGI -->
+        <div class="category-section">
+            <h2>⚡ SUMBER ENERGI (Alternatif Jagung)</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-card" data-id="jagung" onclick="toggleIngredient('jagung')">
+                    <h4>Jagung <span class="badge badge-energy">Energi</span></h4>
+                    <div class="price-tag">Rp 4.500 - 6.500/kg</div>
+                    <div class="nutrition-info">
+                        ME: 3.300 kcal/kg | Protein: 8.5%<br>
+                        Lemak: 3.5% | Serat: 2.5%
+                    </div>
+                    <div class="benefit-text">Sumber energi utama, mudah dicerna, mengandung xantofil untuk warna kuning telur</div>
+                </div>
+
+                <div class="ingredient-card" data-id="singkong" onclick="toggleIngredient('singkong')">
+                    <h4>Tepung Singkong/Onggok <span class="badge badge-energy">Energi</span></h4>
+                    <div class="price-tag">Rp 3.500 - 8.500/kg</div>
+                    <div class="nutrition-info">
+                        ME: 3.200 kcal/kg | Protein: 2-4%<br>
+                        Pati: 80% | HCN: perlu fermentasi
+                    </div>
+                    <div class="benefit-text">Pengganti jagung murah, perlu fermentasi untuk hilangkan sianida. Substitusi 9% aman</div>
+                </div>
+
+                <div class="ingredient-card" data-id="gaplek" onclick="toggleIngredient('gaplek')">
+                    <h4>Tepung Gaplek <span class="badge badge-energy">Energi</span></h4>
+                    <div class="price-tag">Rp 5.000 - 12.500/kg</div>
+                    <div class="nutrition-info">
+                        ME: 3.000 kcal/kg | Protein: 3-4%<br>
+                        Pati kering: 85% | Umur simpan lama
+                    </div>
+                    <div class="benefit-text">Singkong kering, lebih stabil, cocok untuk campuran pakan ternak</div>
+                </div>
+
+                <div class="ingredient-card" data-id="nasiAking" onclick="toggleIngredient('nasiAking')">
+                    <h4>Nasi Aking <span class="badge badge-energy">Energi</span></h4>
+                    <div class="price-tag">Rp 2.000 - 3.500/kg</div>
+                    <div class="nutrition-info">
+                        ME: 2.500 kcal/kg | Protein: 3-5%<br>
+                        Serat: 1-2% | Karbohidrat: 75%
+                    </div>
+                    <div class="benefit-text">Limbah dapur murah, sumber energi baik, perlu fermentasi</div>
+                </div>
+
+                <div class="ingredient-card" data-id="pollard" onclick="toggleIngredient('pollard')">
+                    <h4>Pollard/Gandum <span class="badge badge-energy">Energi</span></h4>
+                    <div class="price-tag">Rp 5.000 - 7.000/kg</div>
+                    <div class="nutrition-info">
+                        ME: 2.800 kcal/kg | Protein: 14-16%<br>
+                        Serat: 8-10% | Vitamin B kompleks
+                    </div>
+                    <div class="benefit-text">Sumber energi + protein, mengandung vitamin B untuk metabolisme</div>
+                </div>
+
+                <div class="ingredient-card" data-id="BIS" onclick="toggleIngredient('BIS')">
+                    <h4>Bungkil Inti Sawit (BIS/PKM) <span class="badge badge-energy">Energi+Protein</span></h4>
+                    <div class="price-tag">Rp 3.500 - 5.000/kg</div>
+                    <div class="nutrition-info">
+                        ME: 2.400 kcal/kg | Protein: 14-18%<br>
+                        Serat: 15-20% | Mannan: prebiotik
+                    </div>
+                    <div class="benefit-text">Limbah sawit melimpah, perlu enzim mannanase. Penggunaan 15% aman</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMBER PROTEIN NABATI -->
+        <div class="category-section">
+            <h2>🌿 SUMBER PROTEIN NABATI (Alternatif Bungkil Kedelai)</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-card" data-id="bungkil" onclick="toggleIngredient('bungkil')">
+                    <h4>Bungkil Kedelai (SBM) <span class="badge badge-protein">Protein</span></h4>
+                    <div class="price-tag">Rp 6.900 - 7.500/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 44% | ME: 2.240 kcal/kg<br>
+                        Lisin: 2.8% | Metionin: 0.6%
+                    </div>
+                    <div class="benefit-text">Protein nabati premium, asam amino lengkap, standar industri pakan</div>
+                </div>
+
+                <div class="ingredient-card" data-id="kanola" onclick="toggleIngredient('kanola')">
+                    <h4>Tepung Kanola <span class="badge badge-protein">Protein</span></h4>
+                    <div class="price-tag">Rp 5.000 - 8.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 36% | Metionin: 0.72%<br>
+                        Lemak: 3-4% | Glukosinolat: perlu pembatasan
+                    </div>
+                    <div class="benefit-text">Metionin baik, cocok dicampur dengan bungkil kedelai</div>
+                </div>
+
+                <div class="ingredient-card" data-id="bungaMatahari" onclick="toggleIngredient('bungaMatahari')">
+                    <h4>Tepung Biji Bunga Matahari <span class="badge badge-protein">Protein</span></h4>
+                    <div class="price-tag">Rp 12.000 - 40.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 32% | ME: 2.200 kcal/kg<br>
+                        Serat: 20-25% | Lisin rendah (1.4%)
+                    </div>
+                    <div class="benefit-text">Serat tinggi, batas penggunaan 25%. Bisa turunkan FCR</div>
+                </div>
+
+                <div class="ingredient-card" data-id="glutenJagung" onclick="toggleIngredient('glutenJagung')">
+                    <h4>Tepung Gluten Jagung (CGM) <span class="badge badge-protein">Protein</span></h4>
+                    <div class="price-tag">Rp 8.000 - 15.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 60-70% | ME: 3.700 kcal/kg<br>
+                        Xantofil tinggi | Metionin baik
+                    </div>
+                    <div class="benefit-text">Protein sangat tinggi, baik untuk ayam petelur, warna telur cerah</div>
+                </div>
+
+                <div class="ingredient-card" data-id="DDGS" onclick="toggleIngredient('DDGS')">
+                    <h4>DDGS (Distillers Grains) <span class="badge badge-protein">Protein</span></h4>
+                    <div class="price-tag">Rp 7.500 - 15.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 27-30% | ME: 2.600 kcal/kg<br>
+                        Lisin rendah | Serat: 7-9%
+                    </div>
+                    <div class="benefit-text">Produk samping etanol, lebih murah dari bungkil kedelai, batas 15%</div>
+                </div>
+
+                <div class="ingredient-card" data-id="ampasTahu" onclick="toggleIngredient('ampasTahu')">
+                    <h4>Ampas Tahu Fermentasi <span class="badge badge-protein">Protein</span></h4>
+                    <div class="price-tag">Rp 2.000 - 5.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 20-25% | ME: 1.800 kcal/kg<br>
+                        Lemak: 10% | Serat: 5-7%
+                    </div>
+                    <div class="benefit-text">Limbah industri murah, fermentasi tingkatkan protein 10-26%</div>
+                </div>
+
+                <div class="ingredient-card" data-id="lamtoro" onclick="toggleIngredient('lamtoro')">
+                    <h4>Daun Lamtoro/Indigofera <span class="badge badge-protein">Protein</span></h4>
+                    <div class="price-tag">Rp 1.000 - 3.000/kg (kering)</div>
+                    <div class="nutrition-info">
+                        Protein: 18-31% | ME: 1.600 kcal/kg<br>
+                        Tanin: perlu pengolahan | Anti cacing
+                    </div>
+                    <div class="benefit-text">Tumbuh liar gratis, kaya protein, perlu dilayukan/dikeringkan</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMBER PROTEIN HEWANI -->
+        <div class="category-section">
+            <h2>🥩 SUMBER PROTEIN HEWANI (Alternatif Tepung Ikan)</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-card" data-id="tepungIkan" onclick="toggleIngredient('tepungIkan')">
+                    <h4>Tepung Ikan <span class="badge badge-protein">Protein Hewani</span></h4>
+                    <div class="price-tag">Rp 8.325 - 15.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 55-65% | ME: 3.000 kcal/kg<br>
+                        Ca: 6.5% | P: 3.5% | Asam amino esensial
+                    </div>
+                    <div class="benefit-text">Protein hewani premium, palatabilitas tinggi, kalsium & fosfor tinggi</div>
+                </div>
+
+                <div class="ingredient-card" data-id="maggot" onclick="toggleIngredient('maggot')">
+                    <h4>Tepung Maggot BSF <span class="badge badge-protein">Protein Hewani</span></h4>
+                    <div class="price-tag">Rp 40.000 - 80.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 45-60% | Lemak: 25-35%<br>
+                        Lisin: 2.6% | Kitin: imunitas
+                    </div>
+                    <div class="benefit-text">Substitusi 5-10% bungkil kedelai, yolk telur lebih gelap, imunitas tinggi</div>
+                </div>
+
+                <div class="ingredient-card" data-id="bekicot" onclick="toggleIngredient('bekicot')">
+                    <h4>Tepung Bekicot <span class="badge badge-protein">Protein Hewani</span></h4>
+                    <div class="price-tag">Rp 16.000 - 25.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 50-60% | ME: 2.800 kcal/kg<br>
+                        Ca tinggi | Mudah dicerna
+                    </div>
+                    <div class="benefit-text">Bisa ganti tepung ikan, melimpah saat musim hujan, kalsium alami</div>
+                </div>
+
+                <div class="ingredient-card" data-id="cacing" onclick="toggleIngredient('cacing')">
+                    <h4>Tepung Cacing Tanah <span class="badge badge-protein">Protein Hewani</span></h4>
+                    <div class="price-tag">Rp 20.000 - 35.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 60-70% | Lemak: 8-10%<br>
+                        Mineral lengkap | Imunostimulan
+                    </div>
+                    <div class="benefit-text">Imunitas DOC, protein murni, budidaya sederhana</div>
+                </div>
+
+                <div class="ingredient-card" data-id="MBM" onclick="toggleIngredient('MBM')">
+                    <h4>Meat Bone Meal (MBM) <span class="badge badge-protein">Protein+Ca</span></h4>
+                    <div class="price-tag">Rp 8.800 - 18.500/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 40-50% | Ca: 10-12%<br>
+                        P: 5-6% | Lemak: 8-10%
+                    </div>
+                    <div class="benefit-text">Protein + kalsium + fosfor, sumber mineral lengkap</div>
+                </div>
+
+                <div class="ingredient-card" data-id="tepungDarah" onclick="toggleIngredient('tepungDarah')">
+                    <h4>Tepung Darah <span class="badge badge-protein">Protein Hewani</span></h4>
+                    <div class="price-tag">Rp 12.000 - 45.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 80-90% | ME: 2.800 kcal/kg<br>
+                        Besi tinggi | Lisin tinggi
+                    </div>
+                    <div class="benefit-text">Protein tertinggi, iron tinggi, batas penggunaan 3-5%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMBER KALSIUM -->
+        <div class="category-section">
+            <h2>🦴 SUMBER KALSIUM (Alternatif Limestone)</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-card" data-id="limestone" onclick="toggleIngredient('limestone')">
+                    <h4>Limestone/Batu Kapur <span class="badge badge-calcium">Kalsium</span></h4>
+                    <div class="price-tag">Rp 2.000 - 3.000/kg</div>
+                    <div class="nutrition-info">
+                        Ca: 38% | P: 0%<br>
+                        Harga murah | Mudah didapat
+                    </div>
+                    <div class="benefit-text">Sumber kalsium utama, murah, untuk kekuatan cangkang telur</div>
+                </div>
+
+                <div class="ingredient-card" data-id="dcp" onclick="toggleIngredient('dcp')">
+                    <h4>Dicalcium Phosphate (DCP) <span class="badge badge-calcium">Ca+P</span></h4>
+                    <div class="price-tag">Rp 1.370 - 26.000/kg</div>
+                    <div class="nutrition-info">
+                        Ca: 18-21% | P: 18-21%<br>
+                        Ca:P ratio 1:1 | Sangat larut
+                    </div>
+                    <div class="benefit-text">Kalsium + fosfor seimbang, penyerapan tinggi, tulang & cangkang optimal</div>
+                </div>
+
+                <div class="ingredient-card" data-id="tulang" onclick="toggleIngredient('tulang')">
+                    <h4>Tepung Tulang (Bone Meal) <span class="badge badge-calcium">Ca+P</span></h4>
+                    <div class="price-tag">Rp 11.500 - 18.500/kg</div>
+                    <div class="nutrition-info">
+                        Ca: 24-30% | P: 12-15%<br>
+                        Protein: 10-15% | Mineral lengkap
+                    </div>
+                    <div class="benefit-text">Kalsium + fosfor + protein, sumber mineral alami</div>
+                </div>
+
+                <div class="ingredient-card" data-id="kerang" onclick="toggleIngredient('kerang')">
+                    <h4>Tepung Kerang <span class="badge badge-calcium">Kalsium</span></h4>
+                    <div class="price-tag">Rp 18.000 - 25.000/kg</div>
+                    <div class="nutrition-info">
+                        Ca: 35-38% | Mg: 1-2%<br>
+                        Mineral laut lengkap
+                    </div>
+                    <div class="benefit-text">Kalsium alami dari laut, mineral trace lengkap</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMBER LEMAK -->
+        <div class="category-section">
+            <h2>🫗 SUMBER LEMAK (Alternatif Minyak Kedelai)</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-card" data-id="minyakKedelai" onclick="toggleIngredient('minyakKedelai')">
+                    <h4>Minyak Kedelai <span class="badge badge-fat">Lemak</span></h4>
+                    <div class="price-tag">Rp 15.000 - 18.000/kg</div>
+                    <div class="nutrition-info">
+                        ME: 8.800 kcal/kg | Lemak: 99%<br>
+                        Omega-6 | Vitamin E
+                    </div>
+                    <div class="benefit-text">Energi tinggi, vitamin E, 1-2% cukup untuk ayam petelur</div>
+                </div>
+
+                <div class="ingredient-card" data-id="minyakIkan" onclick="toggleIngredient('minyakIkan')">
+                    <h4>Minyak Ikan <span class="badge badge-fat">Lemak</span></h4>
+                    <div class="price-tag">Rp 14.000 - 52.000/kg</div>
+                    <div class="nutrition-info">
+                        ME: 8.500 kcal/kg | Omega-3 tinggi<br>
+                        Vitamin A & D | Aroma kuat
+                    </div>
+                    <div class="benefit-text">Omega-3 untuk telur berkualitas, vitamin A/D, penambahan 1-2%</div>
+                </div>
+
+                <div class="ingredient-card" data-id="ampasKelapa" onclick="toggleIngredient('ampasKelapa')">
+                    <h4>Ampas Kelapa <span class="badge badge-fat">Lemak+Protein</span></h4>
+                    <div class="price-tag">Rp 2.000 - 4.000/kg</div>
+                    <div class="nutrition-info">
+                        Lemak: 6-10% | Protein: 18-22%<br>
+                        Serat: 12-15% | Energi: 2.400 kcal/kg
+                    </div>
+                    <div class="benefit-text">Gratis dari penjual santan, lemak + protein, batas 10%</div>
+                </div>
+
+                <div class="ingredient-card" data-id="lemakBabi" onclick="toggleIngredient('lemakBabi')">
+                    <h4>Lemak Hewani <span class="badge badge-fat">Lemak</span></h4>
+                    <div class="price-tag">Rp 10.000 - 15.000/kg</div>
+                    <div class="nutrition-info">
+                        ME: 8.000+ kcal/kg | Lemak: 95-99%<br>
+                        Energi 2.5x jagung
+                    </div>
+                    <div class="benefit-text">Energi sangat tinggi, perlu yang segar/tidak tengik</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMBER VITAMIN & MINERAL -->
+        <div class="category-section">
+            <h2>💊 SUMBER VITAMIN & MINERAL</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-card" data-id="premix" onclick="toggleIngredient('premix')">
+                    <h4>Premix Vitamin & Mineral <span class="badge badge-vitamin">Vitamin</span></h4>
+                    <div class="price-tag">Rp 50.000 - 80.000/kg</div>
+                    <div class="nutrition-info">
+                        Vitamin A,D,E,K,B kompleks<br>
+                        Mineral: Mn, Zn, Fe, Cu, Se, I
+                    </div>
+                    <div class="benefit-text">Lengkap, dosis 0.3-0.5%, wajib untuk pakan komplit</div>
+                </div>
+
+                <div class="ingredient-card" data-id="rumputLaut" onclick="toggleIngredient('rumputLaut')">
+                    <h4>Rumput Laut <span class="badge badge-vitamin">Mineral</span></h4>
+                    <div class="price-tag">Rp 15.000 - 30.000/kg</div>
+                    <div class="nutrition-info">
+                        Iodium: tinggi | Mineral: 40+ jenis<br>
+                        Vitamin B12 | Asam amino
+                    </div>
+                    <div class="benefit-text">Mineral trace lengkap, iodium untuk kesehatan thyroid</div>
+                </div>
+
+                <div class="ingredient-card" data-id="garam" onclick="toggleIngredient('garam')">
+                    <h4>Garam Dapur (NaCl) <span class="badge badge-vitamin">Mineral</span></h4>
+                    <div class="price-tag">Rp 3.000 - 5.000/kg</div>
+                    <div class="nutrition-info">
+                        Na: 39% | Cl: 61%<br>
+                        Dosis: 0.25-0.5%
+                    </div>
+                    <div class="benefit-text">Elektrolit, nafsu makan, metabolisme air</div>
+                </div>
+
+                <div class="ingredient-card" data-id="kalsiumKarbonat" onclick="toggleIngredient('kalsiumKarbonat')">
+                    <h4>Kalsium Karbonat <span class="badge badge-calcium">Kalsium</span></h4>
+                    <div class="price-tag">Rp 2.500 - 4.000/kg</div>
+                    <div class="nutrition-info">
+                        Ca: 40% | Murah<br>
+                        Pengganti limestone
+                    </div>
+                    <div class="benefit-text">Kalsium murni, murah, untuk cangkang telur kuat</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMBER SERAT -->
+        <div class="category-section">
+            <h2>🌾 SUMBER SERAT (Alternatif Dedak)</h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-card" data-id="dedak" onclick="toggleIngredient('dedak')">
+                    <h4>Dedak/Bekatul Padi <span class="badge badge-fiber">Serat</span></h4>
+                    <div class="price-tag">Rp 3.000 - 4.500/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 12% | ME: 2.400 kcal/kg<br>
+                        Serat: 10% | Vitamin B
+                    </div>
+                    <div class="benefit-text">Sumber serat + energi, batas 10-15%, mencegah obesitas</div>
+                </div>
+
+                <div class="ingredient-card" data-id="kulitPisang" onclick="toggleIngredient('kulitPisang')">
+                    <h4>Kulit Pisang Fermentasi <span class="badge badge-fiber">Serat</span></h4>
+                    <div class="price-tag">Rp 1.000 - 2.500/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 4-6% | Serat: 10-12%<br>
+                        Kalium tinggi | Perlu fermentasi
+                    </div>
+                    <div class="benefit-text">Limbah murah, kalium untuk kesehatan otot, fermentasi turunkan serat</div>
+                </div>
+
+                <div class="ingredient-card" data-id="sayurLimbah" onclick="toggleIngredient('sayurLimbah')">
+                    <h4>Sayur Limbah Dapur <span class="badge badge-fiber">Serat+Vitamin</span></h4>
+                    <div class="price-tag">Rp 500 - 2.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 2-4% | Serat: 5-8%<br>
+                        Vitamin: A, C, K | Air tinggi
+                    </div>
+                    <div class="benefit-text">Vitamin alami, air tinggi, pakan tambahan, batas 10%</div>
+                </div>
+
+                <div class="ingredient-card" data-id="pollard2" onclick="toggleIngredient('pollard2')">
+                    <h4>Pollard Gandum <span class="badge badge-fiber">Serat+Protein</span></h4>
+                    <div class="price-tag">Rp 5.000 - 7.000/kg</div>
+                    <div class="nutrition-info">
+                        Protein: 14-16% | Serat: 8-10%<br>
+                        Vitamin B kompleks
+                    </div>
+                    <div class="benefit-text">Serat + protein + vitamin B, pencernaan baik</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REKOMENDASI FORMULASI -->
+        <div class="recommendation-section">
+            <h3>📋 Rekomendasi Formulasi Optimal (Total 100%)</h3>
+            <p>Pilih salah satu rekomendasi di bawah untuk menerapkan ke input:</p>
+            
+            <div class="recommendation-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bahan Pakan</th>
+                            <th>Kategori</th>
+                            <th>Rekomendasi %</th>
+                            <th>Harga/kg</th>
+                            <th>Estimasi Biaya</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recommendationTableBody">
+                        <!-- Diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+                <div class="total-rec" id="totalRecCost">
+                    Total Estimasi Biaya: Rp 0/kg
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; text-align: center;">
+                <button class="btn-calculate" onclick="applyRecommendation('budget')" style="display:inline-block; width:auto; margin:5px;">
+                    💰 Terapkan Formulasi Hemat
+                </button>
+                <button class="btn-calculate" onclick="applyRecommendation('standard')" style="display:inline-block; width:auto; margin:5px;">
+                    ⭐ Terapkan Formulasi Standar
+                </button>
+                <button class="btn-calculate" onclick="applyRecommendation('premium')" style="display:inline-block; width:auto; margin:5px;">
+                    🏆 Terapkan Formulasi Premium
+                </button>
+            </div>
+        </div>
+
+        <!-- INPUT PERSENTASE SECTION -->
+        <div class="input-section">
+            <h2>📝 Masukkan Persentase Bahan Pakan</h2>
+            <div class="hint-text">
+                💡 <strong>Tips:</strong> Klik card bahan di atas untuk menambah/menghapus. Masukkan persentase (0-100) untuk setiap bahan. Total harus tepat 100%.
+            </div>
+            
+            <div class="input-container" id="inputContainer">
+                <div class="empty-state" id="emptyState">
+                    Belum ada bahan yang dipilih. Klik card bahan pakan di atas untuk memilih.
+                </div>
+            </div>
+
+            <div class="total-section">
+                <h3>Total Persentase Bahan</h3>
+                <div class="total-percentage" id="total-percentage">0%</div>
+                <p id="total-status">Tambahkan bahan pakan terlebih dahulu</p>
+            </div>
+        </div>
+
+        <button class="btn-calculate" id="btnCalculate" onclick="calculateFeed()" disabled>🔍 Hitung & Cari Pakan Termurah</button>
+
+        <!-- RESULTS -->
+        <div id="results" style="display:none;">
+            <div class="results-section">
+                <div class="result-card">
+                    <h3>💰 Estimasi Harga Pakan</h3>
+                    <table>
+                        <tr>
+                            <th>Bahan</th>
+                            <th>%</th>
+                            <th>Harga/kg</th>
+                            <th>Biaya</th>
+                        </tr>
+                        <tbody id="price-breakdown"></tbody>
+                        <tr style="background: #667eea; color: white; font-weight: bold;">
+                            <td colspan="3">TOTAL BIAYA PER KG</td>
+                            <td id="total-price">Rp 0</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="shopping-links">
+                        <a href="https://www.tokopedia.com/search?st=product&q=pakan%20ayam%20petelur" target="_blank">🛒 Tokopedia</a>
+                        <a href="https://shopee.co.id/search?keyword=pakan%20ayam%20petelur" target="_blank">🛍️ Shopee</a>
+                        <a href="https://www.lazada.co.id/catalog/?q=pakan+ayam+petelur" target="_blank">📦 Lazada</a>
+                        <a href="https://www.blibli.com/cari/pakan%20ayam%20petelur" target="_blank">🏪 Blibli</a>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>🥗 Kandungan Nilai Gizi</h3>
+                    <table>
+                        <tr>
+                            <th>Nutrisi</th>
+                            <th>Kandungan</th>
+                            <th>Standar Layer</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr>
+                            <td>Protein Kasar</td>
+                            <td id="protein-content">-</td>
+                            <td>16-18%</td>
+                            <td id="protein-status">-</td>
+                        </tr>
+                        <tr>
+                            <td>Energi Metabolis (ME)</td>
+                            <td id="me-content">-</td>
+                            <td>2650-2800 kcal/kg</td>
+                            <td id="me-status">-</td>
+                        </tr>
+                        <tr>
+                            <td>Kalsium (Ca)</td>
+                            <td id="ca-content">-</td>
+                            <td>3.5-4.0%</td>
+                            <td id="ca-status">-</td>
+                        </tr>
+                        <tr>
+                            <td>Fosfor (P)</td>
+                            <td id="p-content">-</td>
+                            <td>0.4-0.6%</td>
+                            <td id="p-status">-</td>
+                        </tr>
+                        <tr>
+                            <td>Lemak Kasar</td>
+                            <td id="fat-content">-</td>
+                            <td>3-5%</td>
+                            <td id="fat-status">-</td>
+                        </tr>
+                        <tr>
+                            <td>Serat Kasar</td>
+                            <td id="fiber-content">-</td>
+                            <td>3-5%</td>
+                            <td id="fiber-status">-</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="result-card">
+                    <h3>🐔 Efek pada Ayam Petelur</h3>
+                    <div class="effect-box">
+                        <h4>✅ Efek Positif:</h4>
+                        <ul id="positive-effects"></ul>
+                    </div>
+                    <div class="effect-box">
+                        <h4>⚠️ Efek Negatif (jika berlebihan):</h4>
+                        <ul id="negative-effects"></ul>
+                    </div>
+                    <div class="effect-box">
+                        <h4>📊 Estimasi Produksi:</h4>
+                        <ul id="production-estimate"></ul>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>🏪 Perbandingan Harga Pakan Jadi (Online)</h3>
+                    <div class="comparison-table">
+                        <table>
+                            <tr>
+                                <th>Merk</th>
+                                <th>Protein</th>
+                                <th>Harga/kg</th>
+                                <th>Tempat</th>
+                            </tr>
+                            <tr>
+                                <td>Hi Pro Vite 324KJ</td>
+                                <td>16-17%</td>
+                                <td class="price-tag-big">Rp 13.500</td>
+                                <td>Tokopedia</td>
+                            </tr>
+                            <tr>
+                                <td>Hi Pro Vite 521</td>
+                                <td>16-18%</td>
+                                <td class="price-tag-big">Rp 11.000</td>
+                                <td>Tokopedia</td>
+                            </tr>
+                            <tr>
+                                <td>New Hope 623</td>
+                                <td>16%</td>
+                                <td class="price-tag-big">Rp 13.500</td>
+                                <td>Tokopedia</td>
+                            </tr>
+                            <tr>
+                                <td>Pur 512</td>
+                                <td>16%</td>
+                                <td class="price-tag-big">Rp 17.250</td>
+                                <td>Tokopedia</td>
+                            </tr>
+                            <tr>
+                                <td>Pakan Komplit TQ931</td>
+                                <td>16-17%</td>
+                                <td class="price-tag-big">Rp 12.250</td>
+                                <td>Tokopedia</td>
+                            </tr>
+                            <tr>
+                                <td>PAR G COMFEED</td>
+                                <td>16%</td>
+                                <td class="price-tag-big">Rp 12.000</td>
+                                <td>Tokopedia</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation" id="recommendation">
+                <h3>💡 Rekomendasi Formulasi</h3>
+                <p id="recommendation-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Database bahan pakan lengkap dengan data harga & gizi
+        const ingredientsData = {
+            // SUMBER ENERGI
+            jagung: { 
+                price: 5500, me: 3300, protein: 8.5, ca: 0.02, p: 0.30, fat: 3.5, fiber: 2.5,
+                name: 'Jagung', category: 'Energi'
+            },
+            singkong: { 
+                price: 6000, me: 3200, protein: 3.0, ca: 0.05, p: 0.08, fat: 0.5, fiber: 3.0,
+                name: 'Tepung Singkong', category: 'Energi'
+            },
+            gaplek: { 
+                price: 8500, me: 3000, protein: 3.5, ca: 0.10, p: 0.10, fat: 0.3, fiber: 4.0,
+                name: 'Tepung Gaplek', category: 'Energi'
+            },
+            nasiAking: { 
+                price: 2750, me: 2500, protein: 4.0, ca: 0.02, p: 0.10, fat: 0.5, fiber: 1.5,
+                name: 'Nasi Aking', category: 'Energi'
+            },
+            pollard: { 
+                price: 6000, me: 2800, protein: 15.0, ca: 0.10, p: 0.80, fat: 3.0, fiber: 9.0,
+                name: 'Pollard Gandum', category: 'Energi'
+            },
+            BIS: { 
+                price: 4250, me: 2400, protein: 16.0, ca: 0.20, p: 0.50, fat: 2.0, fiber: 17.0,
+                name: 'Bungkil Inti Sawit', category: 'Energi'
+            },
+
+            // SUMBER PROTEIN NABATI
+            bungkil: { 
+                price: 7200, me: 2240, protein: 44.0, ca: 0.32, p: 0.67, fat: 1.5, fiber: 6.0,
+                name: 'Bungkil Kedelai', category: 'Protein Nabati'
+            },
+            kanola: { 
+                price: 6500, me: 2100, protein: 36.0, ca: 0.40, p: 0.90, fat: 3.5, fiber: 10.0,
+                name: 'Tepung Kanola', category: 'Protein Nabati'
+            },
+            bungaMatahari: { 
+                price: 26000, me: 2200, protein: 32.0, ca: 0.25, p: 0.90, fat: 15.0, fiber: 22.0,
+                name: 'Tepung Biji Bunga Matahari', category: 'Protein Nabati'
+            },
+            glutenJagung: { 
+                price: 11500, me: 3700, protein: 65.0, ca: 0.05, p: 0.40, fat: 2.5, fiber: 3.0,
+                name: 'Tepung Gluten Jagung', category: 'Protein Nabati'
+            },
+            DDGS: { 
+                price: 11250, me: 2600, protein: 28.5, ca: 0.10, p: 0.70, fat: 9.0, fiber: 8.0,
+                name: 'DDGS', category: 'Protein Nabati'
+            },
+            ampasTahu: { 
+                price: 3500, me: 1800, protein: 22.5, ca: 0.20, p: 0.40, fat: 10.0, fiber: 6.0,
+                name: 'Ampas Tahu Fermentasi', category: 'Protein Nabati'
+            },
+            lamtoro: { 
+                price: 2000, me: 1600, protein: 24.5, ca: 1.20, p: 0.25, fat: 3.0, fiber: 9.0,
+                name: 'Daun Lamtoro', category: 'Protein Nabati'
+            },
+
+            // SUMBER PROTEIN HEWANI
+            tepungIkan: { 
+                price: 11660, me: 3000, protein: 60.0, ca: 6.50, p: 3.50, fat: 8.0, fiber: 1.0,
+                name: 'Tepung Ikan', category: 'Protein Hewani'
+            },
+            maggot: { 
+                price: 60000, me: 3200, protein: 52.5, ca: 5.00, p: 1.50, fat: 30.0, fiber: 7.0,
+                name: 'Tepung Maggot BSF', category: 'Protein Hewani'
+            },
+            bekicot: { 
+                price: 20500, me: 2800, protein: 55.0, ca: 20.0, p: 1.00, fat: 3.0, fiber: 3.0,
+                name: 'Tepung Bekicot', category: 'Protein Hewani'
+            },
+            cacing: { 
+                price: 27500, me: 2900, protein: 65.0, ca: 0.50, p: 0.80, fat: 9.0, fiber: 2.0,
+                name: 'Tepung Cacing', category: 'Protein Hewani'
+            },
+            MBM: { 
+                price: 13650, me: 2500, protein: 45.0, ca: 11.0, p: 5.50, fat: 9.0, fiber: 3.0,
+                name: 'Meat Bone Meal', category: 'Protein Hewani'
+            },
+            tepungDarah: { 
+                price: 28500, me: 2800, protein: 85.0, ca: 0.30, p: 0.30, fat: 1.5, fiber: 1.0,
+                name: 'Tepung Darah', category: 'Protein Hewani'
+            },
+
+            // SUMBER KALSIUM
+            limestone: { 
+                price: 2500, me: 0, protein: 0, ca: 38.0, p: 0, fat: 0, fiber: 0,
+                name: 'Limestone', category: 'Kalsium'
+            },
+            dcp: { 
+                price: 13700, me: 0, protein: 0, ca: 19.5, p: 19.5, fat: 0, fiber: 0,
+                name: 'Dicalcium Phosphate', category: 'Kalsium'
+            },
+            tulang: { 
+                price: 15000, me: 0, protein: 12.5, ca: 27.0, p: 13.5, fat: 2.0, fiber: 0,
+                name: 'Tepung Tulang', category: 'Kalsium'
+            },
+            kerang: { 
+                price: 21500, me: 0, protein: 3.0, ca: 36.5, p: 0.50, fat: 1.0, fiber: 2.0,
+                name: 'Tepung Kerang', category: 'Kalsium'
+            },
+
+            // SUMBER LEMAK
+            minyakKedelai: { 
+                price: 16500, me: 8800, protein: 0, ca: 0, p: 0, fat: 99.0, fiber: 0,
+                name: 'Minyak Kedelai', category: 'Lemak'
+            },
+            minyakIkan: { 
+                price: 33000, me: 8500, protein: 0, ca: 0, p: 0, fat: 99.0, fiber: 0,
+                name: 'Minyak Ikan', category: 'Lemak'
+            },
+            ampasKelapa: { 
+                price: 3000, me: 2400, protein: 20.0, ca: 0.15, p: 0.50, fat: 8.0, fiber: 13.5,
+                name: 'Ampas Kelapa', category: 'Lemak'
+            },
+            lemakBabi: { 
+                price: 12500, me: 8200, protein: 0, ca: 0, p: 0, fat: 97.0, fiber: 0,
+                name: 'Lemak Hewani', category: 'Lemak'
+            },
+
+            // VITAMIN & MINERAL
+            premix: { 
+                price: 65000, me: 0, protein: 0, ca: 15.0, p: 5.0, fat: 0, fiber: 0,
+                name: 'Premix Vitamin', category: 'Vitamin'
+            },
+            rumputLaut: { 
+                price: 22500, me: 1200, protein: 8.0, ca: 3.00, p: 0.20, fat: 1.0, fiber: 5.0,
+                name: 'Rumput Laut', category: 'Vitamin'
+            },
+            garam: { 
+                price: 4000, me: 0, protein: 0, ca: 0, p: 0, fat: 0, fiber: 0,
+                name: 'Garam Dapur', category: 'Vitamin'
+            },
+            kalsiumKarbonat: { 
+                price: 3250, me: 0, protein: 0, ca: 40.0, p: 0, fat: 0, fiber: 0,
+                name: 'Kalsium Karbonat', category: 'Kalsium'
+            },
+
+            // SUMBER SERAT
+            dedak: { 
+                price: 3750, me: 2400, protein: 12.0, ca: 0.20, p: 1.00, fat: 3.0, fiber: 10.0,
+                name: 'Dedak Padi', category: 'Serat'
+            },
+            kulitPisang: { 
+                price: 1750, me: 1300, protein: 5.0, ca: 0.60, p: 0.10, fat: 0.5, fiber: 11.0,
+                name: 'Kulit Pisang', category: 'Serat'
+            },
+            sayurLimbah: { 
+                price: 1250, me: 1000, protein: 3.0, ca: 0.30, p: 0.10, fat: 0.3, fiber: 6.5,
+                name: 'Sayur Limbah', category: 'Serat'
+            },
+            pollard2: { 
+                price: 6000, me: 2800, protein: 15.0, ca: 0.10, p: 0.80, fat: 3.0, fiber: 9.0,
+                name: 'Pollard (Serat)', category: 'Serat'
+            }
+        };
+
+        // Rekomendasi formulasi
+        const recommendations = {
+            budget: {
+                name: 'Formulasi Hemat (Murah)',
+                ingredients: {
+                    jagung: 55,
+                    bungkil: 18,
+                    dedak: 10,
+                    ampasTahu: 8,
+                    limestone: 8,
+                    premix: 0.5,
+                    garam: 0.5
+                }
+            },
+            standard: {
+                name: 'Formulasi Standar (Seimbang)',
+                ingredients: {
+                    jagung: 52,
+                    bungkil: 20,
+                    dedak: 8,
+                    tepungIkan: 3,
+                    limestone: 8.5,
+                    minyakKedelai: 1,
+                    premix: 0.5,
+                    garam: 0.5
+                }
+            },
+            premium: {
+                name: 'Formulasi Premium (Kualitas Tinggi)',
+                ingredients: {
+                    jagung: 48,
+                    bungkil: 18,
+                    glutenJagung: 5,
+                    tepungIkan: 5,
+                    maggot: 3,
+                    limestone: 8,
+                    minyakIkan: 1,
+                    premix: 0.5,
+                    garam: 0.5,
+                    dedak: 5
+                }
+            }
+        };
+
+        let selectedIngredients = {};
+        let currentRecommendation = 'standard';
+
+        function toggleIngredient(id) {
+            const card = document.querySelector(`.ingredient-card[data-id="${id}"]`);
+            
+            if (selectedIngredients[id] !== undefined) {
+                // Cancel pilihan
+                delete selectedIngredients[id];
+                card.classList.remove('selected');
+            } else {
+                // Pilih bahan
+                selectedIngredients[id] = 0;
+                card.classList.add('selected');
+            }
+            
+            updateInputFields();
+            calculateTotal();
+        }
+
+        function updateInputFields() {
+            const container = document.getElementById('inputContainer');
+            const emptyState = document.getElementById('emptyState');
+            const btnCalculate = document.getElementById('btnCalculate');
+            
+            // Hapus semua input item yang ada
+            const existingItems = container.querySelectorAll('.input-item');
+            existingItems.forEach(item => item.remove());
+            
+            const ingredientCount = Object.keys(selectedIngredients).length;
+            
+            if (ingredientCount === 0) {
+                emptyState.style.display = 'block';
+                btnCalculate.disabled = true;
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            btnCalculate.disabled = false;
+            
+            for (const [id, value] of Object.entries(selectedIngredients)) {
+                const data = ingredientsData[id];
+                const div = document.createElement('div');
+                div.className = 'input-item';
+                div.innerHTML = `
+                    <label>
+                        <span>${data.name} <span style="font-size:0.8em; color:#888;">(${data.category})</span></span>
+                        <button class="remove-btn" onclick="removeIngredient('${id}')">✕ Hapus</button>
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="number" 
+                            id="input-${id}" 
+                            value="${value || ''}" 
+                            min="0" 
+                            max="100" 
+                            step="0.1"
+                            placeholder="0"
+                            onfocus="clearZero(this)"
+                            oninput="updateInputValue('${id}')">
+                        <span class="percent-sign">%</span>
+                    </div>
+                    <div class="nutrition-detail">
+                        Harga: Rp ${data.price.toLocaleString()}/kg | 
+                        Protein: ${data.protein}% | 
+                        ME: ${data.me} kcal/kg | 
+                        Ca: ${data.ca}%
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        function clearZero(input) {
+            if (input.value === '0') {
+                input.value = '';
+            }
+        }
+
+        function removeIngredient(id) {
+            delete selectedIngredients[id];
+            
+            // Hapus selected class dari card
+            const card = document.querySelector(`.ingredient-card[data-id="${id}"]`);
+            if (card) {
+                card.classList.remove('selected');
+            }
+            
+            updateInputFields();
+            calculateTotal();
+        }
+
+        function updateInputValue(id) {
+            const input = document.getElementById('input-' + id);
+            let val = parseFloat(input.value);
+            
+            // Validasi input
+            if (isNaN(val) || val < 0) val = 0;
+            if (val > 100) val = 100;
+            
+            selectedIngredients[id] = val;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            for (const val of Object.values(selectedIngredients)) {
+                total += val;
+            }
+
+            const totalEl = document.getElementById('total-percentage');
+            const statusEl = document.getElementById('total-status');
+            const btnCalculate = document.getElementById('btnCalculate');
+            
+            totalEl.textContent = total.toFixed(1) + '%';
+            
+            if (total === 100) {
+                totalEl.style.color = '#1dd1a1';
+                statusEl.textContent = '✅ Total sudah tepat 100%! Siap dihitung.';
+                statusEl.style.color = '#1dd1a1';
+                btnCalculate.disabled = false;
+            } else if (total > 100) {
+                totalEl.style.color = '#ff6b6b';
+                statusEl.textContent = '⚠️ Total melebihi 100%! Kurangi beberapa bahan.';
+                statusEl.style.color = '#ff6b6b';
+                btnCalculate.disabled = true;
+            } else {
+                totalEl.style.color = '#feca57';
+                statusEl.textContent = `⚠️ Total masih ${(100 - total).toFixed(1)}% lagi.`;
+                statusEl.style.color = '#feca57';
+                btnCalculate.disabled = true;
+            }
+        }
+
+        function updateRecommendationTable() {
+            const tbody = document.getElementById('recommendationTableBody');
+            const rec = recommendations[currentRecommendation];
+            
+            let html = '';
+            let totalCost = 0;
+            
+            for (const [id, percent] of Object.entries(rec.ingredients)) {
+                const data = ingredientsData[id];
+                const cost = (data.price * percent / 100);
+                totalCost += cost;
+                
+                html += `
+                    <tr>
+                        <td><strong>${data.name}</strong></td>
+                        <td>${data.category}</td>
+                        <td class="rec-percent">${percent}%</td>
+                        <td>Rp ${data.price.toLocaleString()}</td>
+                        <td class="rec-price">Rp ${Math.round(cost).toLocaleString()}</td>
+                        <td><button class="btn-apply-rec" onclick="addSingleIngredient('${id}', ${percent})">+ Tambah</button></td>
+                    </tr>
+                `;
+            }
+            
+            tbody.innerHTML = html;
+            document.getElementById('totalRecCost').textContent = 
+                `Total Estimasi Biaya ${rec.name}: Rp ${Math.round(totalCost).toLocaleString()}/kg`;
+        }
+
+        function addSingleIngredient(id, percent) {
+            // Pilih bahan jika belum dipilih
+            if (selectedIngredients[id] === undefined) {
+                selectedIngredients[id] = 0;
+                const card = document.querySelector(`.ingredient-card[data-id="${id}"]`);
+                if (card) card.classList.add('selected');
+            }
+            
+            // Set nilai persentase
+            selectedIngredients[id] = percent;
+            
+            updateInputFields();
+            calculateTotal();
+        }
+
+        function applyRecommendation(type) {
+            currentRecommendation = type;
+            const rec = recommendations[type];
+            
+            // Reset semua pilihan
+            selectedIngredients = {};
+            document.querySelectorAll('.ingredient-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Pilih bahan-bahan dalam rekomendasi
+            for (const [id, percent] of Object.entries(rec.ingredients)) {
+                selectedIngredients[id] = percent;
+                const card = document.querySelector(`.ingredient-card[data-id="${id}"]`);
+                if (card) card.classList.add('selected');
+            }
+            
+            updateInputFields();
+            calculateTotal();
+            updateRecommendationTable();
+            
+            // Scroll ke input section
+            document.querySelector('.input-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function calculateFeed() {
+            let totalPercent = 0;
+            for (const val of Object.values(selectedIngredients)) {
+                totalPercent += val;
+            }
+
+            if (totalPercent !== 100) {
+                alert('Total persentase harus tepat 100%! Saat ini: ' + totalPercent.toFixed(1) + '%');
+                return;
+            }
+
+            let totalCost = 0;
+            let totalME = 0;
+            let totalProtein = 0;
+            let totalCa = 0;
+            let totalP = 0;
+            let totalFat = 0;
+            let totalFiber = 0;
+            
+            let priceBreakdownHTML = '';
+
+            for (const [id, percent] of Object.entries(selectedIngredients)) {
+                if (percent === 0) continue;
+                
+                const p = percent / 100;
+                const data = ingredientsData[id];
+                
+                const cost = data.price * p;
+                totalCost += cost;
+                totalME += data.me * p;
+                totalProtein += data.protein * p;
+                totalCa += data.ca * p;
+                totalP += data.p * p;
+                totalFat += data.fat * p;
+                totalFiber += data.fiber * p;
+
+                priceBreakdownHTML += `
+                    <tr>
+                        <td>${data.name}</td>
+                        <td>${percent}%</td>
+                        <td>Rp ${data.price.toLocaleString()}</td>
+                        <td>Rp ${Math.round(cost).toLocaleString()}</td>
+                    </tr>
+                `;
+            }
+
+            document.getElementById('price-breakdown').innerHTML = priceBreakdownHTML;
+            document.getElementById('total-price').textContent = 'Rp ' + Math.round(totalCost).toLocaleString();
+
+            document.getElementById('protein-content').textContent = totalProtein.toFixed(2) + '%';
+            document.getElementById('me-content').textContent = Math.round(totalME) + ' kcal/kg';
+            document.getElementById('ca-content').textContent = totalCa.toFixed(2) + '%';
+            document.getElementById('p-content').textContent = totalP.toFixed(2) + '%';
+            document.getElementById('fat-content').textContent = totalFat.toFixed(2) + '%';
+            document.getElementById('fiber-content').textContent = totalFiber.toFixed(2) + '%';
+
+            checkStatus('protein', totalProtein, 16, 18);
+            checkStatus('me', totalME, 2650, 2800);
+            checkStatus('ca', totalCa, 3.5, 4.0);
+            checkStatus('p', totalP, 0.4, 0.6);
+            checkStatus('fat', totalFat, 3, 5);
+            checkStatus('fiber', totalFiber, 3, 5);
+
+            updateEffects(totalProtein, totalME, totalCa, totalFat, totalFiber, totalCost);
+            updateFinalRecommendation(totalCost, totalProtein, totalME, totalCa);
+
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function checkStatus(nutrient, value, min, max) {
+            const statusEl = document.getElementById(nutrient + '-status');
+            if (value >= min && value <= max) {
+                statusEl.textContent = '✅ Optimal';
+                statusEl.className = 'effect-positive';
+            } else if (value < min) {
+                statusEl.textContent = '❌ Kurang';
+                statusEl.className = 'effect-negative';
+            } else {
+                statusEl.textContent = '⚠️ Berlebihan';
+                statusEl.className = 'effect-warning';
+            }
+        }
+
+        function updateEffects(protein, me, ca, fat, fiber, cost) {
+            const positive = [];
+            const negative = [];
+            const production = [];
+
+            if (protein >= 16) {
+                positive.push('Protein cukup untuk produksi telur optimal');
+                production.push('Produksi telur: 280-320 butir/tahun');
+            }
+            if (me >= 2650) {
+                positive.push('Energi cukup untuk metabolisme dan produksi');
+            }
+            if (ca >= 3.5) {
+                positive.push('Kalsium cukup untuk kekuatan cangkang telur');
+                production.push('Kualitas cangkang: Kuat, tidak mudah pecah');
+            }
+            if (fat >= 3) {
+                positive.push('Lemak cukup untuk absorpsi vitamin');
+            }
+            if (cost < 8000) {
+                positive.push('Biaya pakan sangat ekonomis!');
+            }
+
+            if (protein > 20) {
+                negative.push('Protein berlebihan → Amonia tinggi, bau kandang');
+                negative.push('Beban ginjal meningkat');
+            }
+            if (protein < 15) {
+                negative.push('Protein kurang → Produksi telur menurun');
+                negative.push('Ayam bisa mengalami molting dini');
+            }
+            if (ca > 5) {
+                negative.push('Kalsium berlebihan → Gangguan pencernaan');
+                negative.push('Penyerapan P dan Zn terhambat');
+            }
+            if (ca < 3) {
+                negative.push('Kalsium kurang → Cangkang telur tipis/pecah');
+                negative.push('Ayam bisa mengalami osteoporosis');
+            }
+            if (fiber > 7) {
+                negative.push('Serat berlebihan → Nutrisi tidak tercerna optimal');
+                production.push('FCR: Mungkin buruk (>2.5)');
+            }
+            if (me < 2500) {
+                negative.push('Energi kurang → Ayam kurus, produksi turun');
+                production.push('Bobot badan: Tidak ideal (<1.6 kg)');
+            }
+
+            if (production.length === 0) {
+                production.push('Produksi telur: Normal (250-280 butir/tahun)');
+                production.push('FCR: 2.0-2.2 (efisien)');
+            }
+
+            document.getElementById('positive-effects').innerHTML = positive.map(e => `<li class="effect-positive">${e}</li>`).join('') || '<li class="effect-positive">Tidak ada efek positif signifikan</li>';
+            document.getElementById('negative-effects').innerHTML = negative.map(e => `<li class="effect-negative">${e}</li>`).join('') || '<li class="effect-positive">Tidak ada efek negatif signifikan</li>';
+            document.getElementById('production-estimate').innerHTML = production.map(e => `<li>${e}</li>`).join('');
+        }
+
+        function updateFinalRecommendation(cost, protein, me, ca) {
+            let text = '';
+            const isOptimal = protein >= 16 && protein <= 18 && me >= 2650 && me <= 2800 && ca >= 3.5 && ca <= 4.0;
+
+            if (isOptimal) {
+                text = `🎉 Formulasi Anda OPTIMAL! Dengan biaya Rp ${Math.round(cost).toLocaleString()}/kg, formulasi ini memberikan nutrisi seimbang untuk ayam petelur. `;
+                if (cost < 8000) {
+                    text += 'Harga sangat kompetitif dibanding pakan jadi (Rp 11.000-17.000/kg)!';
+                } else if (cost < 12000) {
+                    text += 'Harga masih lebih murah dari sebagian besar pakan jadi.';
+                } else {
+                    text += 'Pertimbangkan untuk mengurangi bahan premium (maggot, tepung ikan) untuk menekan biaya.';
+                }
+            } else {
+                text = '⚠️ Formulasi perlu disesuaikan. ';
+                if (protein < 16) text += 'Tambah bungkil kedelai, gluten jagung, atau ampas tahu. ';
+                if (protein > 20) text += 'Kurangi sumber protein, tambah jagung/singkong. ';
+                if (ca < 3.5) text += 'Tambah limestone, DCP, atau tepung tulang. ';
+                if (me < 2650) text += 'Tambah jagung, minyak, atau singkong untuk energi. ';
+            }
+
+            document.getElementById('recommendation-text').textContent = text;
+        }
+
+        // Initialize
+        updateRecommendationTable();
+        calculateTotal();
+    </script>
+</body>
+</html>
+
